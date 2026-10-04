@@ -10,6 +10,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unzip project
         run: unzip -q MandiLive_android_for_github.zip -d proj
+      - name: Fix Java target
+        working-directory: proj
+        run: |
+          sed -i '/^android {/a\    compileOptions {\n        sourceCompatibility = JavaVersion.VERSION_17\n        targetCompatibility = JavaVersion.VERSION_17\n    }\n    kotlinOptions {\n        jvmTarget = "17"\n    }' app/build.gradle.kts
+          cat app/build.gradle.kts
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
